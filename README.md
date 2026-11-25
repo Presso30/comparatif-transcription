@@ -36,18 +36,34 @@ Sur la réunion entière, Whisper large-v3 a pris 4 minutes et ElevenLabs une mi
 
 ## Ce que j'en retiens
 
-**Le classement ne prédit pas le résultat sur un audio difficile.** Les deux modèles locaux les mieux classés ont été les pires sur mon enregistrement. Les scores sont mesurés sur des enregistrements propres, dans une seule langue. Une interprétation simultanée par-dessus l'anglais n'a rien à voir. Cohere Transcribe et les modèles du même type écrivent le texte avec un modèle de langage, et c'est ce rédacteur qui s'est emballé quand l'audio mélangeait deux langues. Le test sur un extrait de 5 minutes m'a coûté une demi-heure et m'a évité de bâtir le compte rendu sur un mauvais texte.
+### Le classement ne prédit pas le résultat sur un audio difficile
 
-**Le défaut d'un modèle peut servir.** En voyant TheStage transcrire l'anglais de fond, j'ai lancé Whisper en mode anglais sur le même audio. Il a récupéré le discours d'origine, plus complet que la traduction : l'interprète résumait et avait sauté des phrases entières. Cette seconde transcription a aussi corrigé des chiffres mal traduits. Par exemple, un objectif de « 50-50 » était devenu « 55 » en français, et une date limite en 2027 était devenue 2025.
+Les deux modèles locaux les mieux classés ont été les pires sur mon enregistrement. Les scores sont mesurés sur des enregistrements propres, dans une seule langue. Une interprétation simultanée par-dessus l'anglais n'a rien à voir. Cohere Transcribe et les modèles du même type écrivent le texte avec un modèle de langage, et c'est ce rédacteur qui s'est emballé quand l'audio mélangeait deux langues. Le test sur un extrait de 5 minutes m'a coûté une demi-heure et m'a évité de bâtir le compte rendu sur un mauvais texte.
 
-**La version finale combine trois sources** :
+### Le défaut d'un modèle peut servir
+
+En voyant TheStage transcrire l'anglais de fond, j'ai lancé Whisper en mode anglais sur le même audio. Il a récupéré le discours d'origine, plus complet que la traduction : l'interprète résumait et avait sauté des phrases entières. Cette seconde transcription a aussi corrigé des chiffres mal traduits. Par exemple, un objectif de « 50-50 » était devenu « 55 » en français, et une date limite en 2027 était devenue 2025.
+
+### La version finale combine trois sources
+
+
 - ElevenLabs pour le texte de base ;
 - Whisper en français pour corriger les mots mal reconnus ;
 - Whisper en anglais pour vérifier les chiffres, les dates et les noms, et pour signaler en note ce que l'interprète avait omis.
 
 Les passages douteux sont marqués et minutés pour une vérification à l'oreille. Aucun outil ne donne une transcription exacte à 100 %. Les noms propres et les sigles restent le point faible de tous.
 
-**En local ou en ligne ?** Pour un enregistrement confidentiel, Whisper large-v3 en local donne un résultat très correct en quelques minutes sur une carte de 8 Go, et rien ne sort de la machine. Quand la confidentialité n'est pas un problème, ElevenLabs Scribe v2 était le plus précis sur mon audio.
+## Ma recommandation
+
+Pour un petit projet (quelques réunions, un entretien, un podcast), j'utiliserais directement l'API ElevenLabs Scribe v2, celle qui a donné le meilleur résultat ici :
+- elle prend le fichier entier sans découpage, jusqu'à 3 Go et 10 heures d'audio ;
+- elle a transcrit 1 h 20 en une minute, avec l'horodatage de chaque mot et la séparation des voix ;
+- l'offre gratuite de l'API couvre environ 4 h 30 de transcription, puis le tarif est de 0,22 $ par heure d'audio (tarifs relevés en novembre 2026) ;
+- il n'y a rien à installer à part Python et une clé d'API, et pas besoin de carte graphique.
+
+Le script `scripts/elevenlabs_stt.py` suffit pour s'en servir.
+
+Deux réserves. L'audio part sur les serveurs d'ElevenLabs : pour un enregistrement confidentiel, je garderais Whisper large-v3 en local, qui donne un résultat très correct en quelques minutes sur une carte de 8 Go sans que rien ne sorte de la machine. Et dans tous les cas, une relecture humaine reste nécessaire pour les noms propres et les chiffres.
 
 ## Utiliser les scripts
 
