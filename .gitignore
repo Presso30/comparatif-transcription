@@ -1,0 +1,20 @@
+# Secrets
+.env
+*.env
+
+# Données : audio, vidéo, transcriptions et sorties (jamais dans le dépôt)
+*.wav
+*.mp3
+*.mp4
+*.m4a
+*.json
+*.txt
+!requirements.txt
+*.pdf
+*.html
+donnees/
+
+# Environnements Python
+.venv/
+.venv-*/
+__pycache__/
